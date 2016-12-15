@@ -33,4 +33,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "geocoder", "~> 1.4"
   spec.add_dependency "kmeans-clusterer", "~> 0.11"
+  spec.add_dependency "rest-client", "~> 2.0"
 end

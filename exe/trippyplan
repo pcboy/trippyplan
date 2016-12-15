@@ -6,8 +6,8 @@ require 'awesome_print'
 file = ARGV.shift
 days = ARGV.shift.to_i
 
-addresses = File.read(file).split("\n")
-clusters = Trippyplan::Trippyplan.new(days).clusterize(addresses)
+
+clusters = Trippyplan::Trippyplan.new(days, advisor: {headers: file, list: 57292478}).clusterize
 clusters.each do |cluster|
   puts "Day #{cluster.id + 1}:\n"
   puts "\t#{cluster.points.map(&:label).join("\n\t")}"
