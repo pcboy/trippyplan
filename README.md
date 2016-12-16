@@ -35,11 +35,11 @@ Day 3:
 trippyplan can directly fetch a list of places you saved for your trip already.
 What you need to gives me is your cookie though.
 To get that cookie:
-	- simply activate the developer tools in your browser (i.e right click, inspect) and go to the network tab and the XHR filter.
-	- go to your trip advisor saved trip url (should look something like https://www.tripadvisor.com/Saves/57292478),
-	- On the list of calls on the right find the one with just a number (in my case 57292478) and click on it
-	- You should now have on the right the request headers.
-	- What you need is the `X-Requested-By` value and the `Cookie` value. Create a file `cookie.yaml` and paste these values following that format:
+- simply activate the developer tools in your browser (i.e right click, inspect) and go to the network tab and the XHR filter.
+- go to your trip advisor saved trip url (should look something like https://www.tripadvisor.com/Saves/57292478)
+- On the list of calls on the right find the one with just a number (in my case 57292478) and click on it
+- You should now have on the right the request headers.
+- What you need is the `X-Requested-By` value and the `Cookie` value. Create a file `cookie.yaml` and paste these values following that format:  
 ```
 js_security_token: 'TNI1635!AO6YTYtm5C46HxKNQ8HdixmF7xMnk+SrVIEjyROUSajGaSHSrH0h/bjbR1qCEEifYhuOTktGYB29yWuy3Qsr8Gd/1MN4NN4MQTRSmFYsb4APQEsu6A2gNtX7nytOB8RSoBgBSz5FqoUNxjXU90eTq9i+zAqeX/EsgmJdPNn1gy/U'
 cookie: 'TAUnique=%1%enc%3A%2FhBZMXFzVlmxR%2FK32EAYhU2jwwE8%2FgjJoTfLQq1%2BeLPqbL7B36alrg%3D%3D; ServerPool=A; TASSK=enc%3AAOkqsILPd%2F6vwdO2FBmMAlIPTLzn8ool0U1GN2xIChUD6Qko6gL5J%2Bdj%2FLCcYdVKPpY3r8EXNKVh8ltkWEwGBgsOBzcSPpcfe[...]'
