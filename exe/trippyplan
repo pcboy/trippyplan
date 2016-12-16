@@ -1,13 +1,28 @@
 #!/usr/bin/env ruby
 
 require 'trippyplan'
-require 'awesome_print'
+require 'trollop'
+require 'active_support/core_ext/object/try'
+require 'active_support/core_ext/object/blank'
 
-file = ARGV.shift
-days = ARGV.shift.to_i
+opts = Trollop::options do
+  opt :tripadvisor_url, "URL to your tripadvisor trip page (e.g https://www.tripadvisor.com/Saves/57292478)", type: :string
+  opt :tripadvisor_cookiefile, "Used in conjonction with --tripadvisor-url (see README)", type: :string
+  opt :tsv, "A TSV file (format: attraction_name<tab>address . see README)", type: :string
+  opt :days, "Will group your attractions in that number of groups, usually that's almost the same as your number of vacation days", default: 7
+  stop_on_unknown
+end
 
+Trollop.educate unless opts[:tripadvisor_url] || opts[:tsv]
+abort "You need to specify --tripadvisor_cookiefile" if opts[:tripadvisor_url] && opts[:tripadvisor_cookiefile].blank?
 
-clusters = Trippyplan::Trippyplan.new(days, advisor: {headers: file, list: 57292478}).clusterize
+list_id = /https:\/\/www.tripadvisor.com\/Saves\/(\d+)/.match(opts[:tripadvisor_url]).try(:captures).try(:first).try(:to_i)
+
+clusters = if opts[:tripadvisor_url]
+             Trippyplan::Trippyplan.new(opts[:days], advisor: { headers: opts[:tripadvisor_cookiefile], list: list_id }).clusterize
+           else
+             Trippyplan::Trippyplan.new(opts[:days], tsv: opts[:tsv]).clusterize
+           end
 clusters.each do |cluster|
   puts "Day #{cluster.id + 1}:\n"
   puts "\t#{cluster.points.map(&:label).join("\n\t")}"

@@ -13,28 +13,27 @@ module Trippyplan
         @addresses = File.read(tsv).split("\n").map{|x| x.split("\t")}.map{|x| {x[0] => x[1]}}.reduce(:merge)
         @addresses = addresses_to_coords(@addresses)
       end
-      if advisor[:list] && advisor[:headers]
+      if advisor && advisor[:list]
         headers = YAML.load_file(advisor[:headers])
-        ap headers
+        abort "Your cookie file does not contain the necessary info. See README for example" unless (['cookie', 'js_security_token'] - headers.keys).empty?
         body = RestClient.get("https://www.tripadvisor.com/data/1.0/trips/list/#{advisor[:list]}",
                        {
                         :Cookie => headers['cookie'],
                         'X-Requested-By' => headers['js_security_token'],
                         }
                       )
-        @addresses = tripadvisor_to_coords(body)
+        @addresses = advisor_to_coords(body)
       end
     end
 
     def clusterize
-      ap @addresses
       kmeans = KMeansClusterer.run @days, @addresses.values, labels: @addresses.keys, runs: 10
       kmeans.clusters
     end
 
     private
 
-    def tripadvisor_to_coords(body)
+    def advisor_to_coords(body)
       json = JSON.parse(body)
       json['nodes'].map do |n|
         content = n['content']
