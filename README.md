@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pcboy/trippyplan.svg?branch=master)](https://travis-ci.org/pcboy/trippyplan)
+
 # Trippyplan
 
 Trippy plan helps you to plan your next trip by grouping attractions close to each other.
